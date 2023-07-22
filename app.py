@@ -3,16 +3,12 @@ import time
 from datetime import datetime
 from bs4 import BeautifulSoup
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-import time
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import firestore
-from flask import Flask, request, jsonify
-import tkinter as tk
-import schedule
-import time
 from selenium.webdriver.edge.service import Service
+import firebase_admin
+from firebase_admin import credentials, firestore
+from flask import Flask, request, jsonify
+
+
 
 app = Flask(__name__)
 
@@ -29,12 +25,10 @@ def Rate_SRO():
         app = firebase_admin.initialize_app(cred)
     db = firestore.client()
     
-        # โค้ดการ scrape data ที่ต้องการ
-    # Use a service account.
     company_name = 'SRO'
     print("Scraping data "+company_name)
 
-    # เพิ่มโค้ด Web Scraping จากไฟล์อื่นๆ ตามต้องการ
+
     url = "https://www.superrich1965.com/currency.php"
     
     service  = Service(executable_path='env\msedgedriver.exe') 
@@ -102,29 +96,29 @@ def Rate_SRO():
             rate.append(d)
     print(rate)
 
-    # Prepare the data to update
+
     SRO = {
         u'agenName': company_name,
         u'agency': rate,
         u'DateTimeUPDATE': str(datetime.now().strftime("%d_%m_%Y_%H_%M_%S"))
     }
 
-    # Fetch the document with the matching agenName
+
     docs = db.collection('getCurrency').where("agenName", "==", company_name).get()
 
-    # Check if a document was found
+
     if len(docs) > 0:
-        # Update the document with the new data
+
         for doc in docs:
             key = doc.id
             db.collection('getCurrency').document(key).update(SRO)
             print(f"Updated document {company_name} with key: {key}")
     else:
-        # If no document was found, create a new one
+
         db.collection('getCurrency').add(SRO)
         print("Created a new document "+company_name)
         
-    # Save on Firebase keepPIN pin
+
     docsURL = db.collection('keepUID').document("pin").update({'urlSRO': url})
     print(f"URL SRO {url} has been saved to Firestore under collection 'keepUID' and document 'pin'.")
 
@@ -155,7 +149,7 @@ def Rate_SRG():
 
     soup = BeautifulSoup(html, "html.parser")
     all_divs = soup.find('div', {'class': 'container'}).text
-    # transcript = all_divs.find('table',class_ ='table')
+
     li = soup.find_all('div', {'class': 'table shadow'})
     tr = soup.find_all('table', {'class': 'table'})
     td = []
@@ -230,29 +224,29 @@ def Rate_SRG():
 
         rate.append(d)
     print(d)
-    # Prepare the data to update
+
     SRG = {
         u'agenName': company_name,
         u'agency': rate,
         u'DateTimeUPDATE': str(datetime.now().strftime("%d_%m_%Y_%H_%M_%S"))
     }
 
-    # Fetch the document with the matching agenName
+
     docs = db.collection('getCurrency').where("agenName", "==", company_name).get()
 
-    # Check if a document was found
+
     if len(docs) > 0:
-        # Update the document with the new data
+
         for doc in docs:
             key = doc.id
             db.collection('getCurrency').document(key).update(SRG)
             print(f"Updated document {company_name} with key: {key}")
     else:
-        # If no document was found, create a new one
+
         db.collection('getCurrency').add(SRG)
         print("Created a new document "+company_name)
         
-    # Save on Firebase keepPIN pin
+
     docsURL = db.collection('keepUID').document("pin").update({'urlSRG': url})
     print(f"URL SRG {url} has been saved to Firestore under collection 'keepUID' and document 'pin'.")
 
@@ -352,29 +346,29 @@ def Rate_K79():
             
     print(d)
 
-    # Prepare the data to update
+
     K79 = {
         u'agenName': company_name,
         u'agency': rate,
         u'DateTimeUPDATE': str(datetime.now().strftime("%d_%m_%Y_%H_%M_%S"))
     }
 
-    # Fetch the document with the matching agenName
+
     docs = db.collection('getCurrency').where("agenName", "==", company_name).get()
 
-    # Check if a document was found
+
     if len(docs) > 0:
-        # Update the document with the new data
+
         for doc in docs:
             key = doc.id
             db.collection('getCurrency').document(key).update(K79)
             print(f"Updated document {company_name} with key: {key}")
     else:
-        # If no document was found, create a new one
+
         db.collection('getCurrency').add(K79)
         print("Created a new document "+company_name)
         
-    # Save on Firebase keepPIN pin
+
     docsURL = db.collection('keepUID').document("pin").update({'urlK79': url})
     print(f"URL K79 {url} has been saved to Firestore under collection 'keepUID' and document 'pin'.")
 
@@ -482,29 +476,28 @@ def Rate_VSU():
         rate.append(d)
     print(d)
 
-    # Prepare the data to update
+
     VSU = {
         u'agenName': company_name,
         u'agency': rate,
         u'DateTimeUPDATE': str(datetime.now().strftime("%d_%m_%Y_%H_%M_%S"))
     }
 
-    # Fetch the document with the matching agenName
+
     docs = db.collection('getCurrency').where("agenName", "==", company_name).get()
 
-    # Check if a document was found
     if len(docs) > 0:
-        # Update the document with the new data
+
         for doc in docs:
             key = doc.id
             db.collection('getCurrency').document(key).update(VSU)
             print(f"Updated document {company_name} with key: {key}")
     else:
-        # If no document was found, create a new one
+
         db.collection('getCurrency').add(VSU)
         print("Created a new document "+company_name)
         
-    # Save on Firebase keepPIN pin
+
     docsURL = db.collection('keepUID').document("pin").update({'urlVSU': url})
     print(f"URL VSU {url} has been saved to Firestore under collection 'keepUID' and document 'pin'.")
 
@@ -533,7 +526,6 @@ def Rate_XNE():
 
     soup = BeautifulSoup(html, "html.parser")
     all_divs = soup.find('div', {'class': 'container'}).text
-    # transcript = all_divs.find('table',class_ ='table')
     li = soup.find_all('div', {'class': 'table shadow'})
     tr = soup.find_all('table', {'class': 'table'})
     td = []
@@ -604,29 +596,29 @@ def Rate_XNE():
             
     print(d)
 
-    # Prepare the data to update
+
     XNE = {
         u'agenName': company_name,
         u'agency': rate,
         u'DateTimeUPDATE': str(datetime.now().strftime("%d_%m_%Y_%H_%M_%S"))
     }
 
-    # Fetch the document with the matching agenName
+
     docs = db.collection('getCurrency').where("agenName", "==", company_name).get()
 
-    # Check if a document was found
+
     if len(docs) > 0:
-        # Update the document with the new data
+
         for doc in docs:
             key = doc.id
             db.collection('getCurrency').document(key).update(XNE)
             print(f"Updated document {company_name} with key: {key}")
     else:
-        # If no document was found, create a new one
+
         db.collection('getCurrency').add(XNE)
         print("Created a new document "+company_name)
         
-    # Save on Firebase keepPIN pin
+
     docsURL = db.collection('keepUID').document("pin").update({'urlXNE': url})
     print(f"URL XNE {url} has been saved to Firestore under collection 'keepUID' and document 'pin'.")
 
@@ -723,29 +715,29 @@ def Rate_SME():
             
     print(d)
 
-    # Prepare the data to update
+
     SME = {
         u'agenName': company_name,
         u'agency': rate,
         u'DateTimeUPDATE': str(datetime.now().strftime("%d_%m_%Y_%H_%M_%S"))
     }
 
-    # Fetch the document with the matching agenName
+
     docs = db.collection('getCurrency').where("agenName", "==", company_name).get()
 
-    # Check if a document was found
+
     if len(docs) > 0:
-        # Update the document with the new data
+
         for doc in docs:
             key = doc.id
             db.collection('getCurrency').document(key).update(SME)
             print(f"Updated document {company_name} with key: {key}")
     else:
-        # If no document was found, create a new one
+
         db.collection('getCurrency').add(SME)
         print("Created a new document "+company_name)
         
-    # Save on Firebase keepPIN pin
+
     docsURL = db.collection('keepUID').document("pin").update({'urlSME': url})
     print(f"URL SME {url} has been saved to Firestore under collection 'keepUID' and document 'pin'.")
 
@@ -857,29 +849,29 @@ def Rate_VPC():
             
     print(d)
 
-    # Prepare the data to update
+
     VPC = {
         u'agenName': company_name,
         u'agency': rate,
         u'DateTimeUPDATE': str(datetime.now().strftime("%d_%m_%Y_%H_%M_%S"))
     }
 
-    # Fetch the document with the matching agenName
+
     docs = db.collection('getCurrency').where("agenName", "==", company_name).get()
 
-    # Check if a document was found
+
     if len(docs) > 0:
-        # Update the document with the new data
+
         for doc in docs:
             key = doc.id
             db.collection('getCurrency').document(key).update(VPC)
             print(f"Updated document {company_name} with key: {key}")
     else:
-        # If no document was found, create a new one
+
         db.collection('getCurrency').add(VPC)
         print("Created a new document "+company_name)
         
-    # Save on Firebase keepPIN pin
+
     docsURL = db.collection('keepUID').document("pin").update({'urlVPC': url})
     print(f"URL VPC {url} has been saved to Firestore under collection 'keepUID' and document 'pin'.")
 
@@ -900,25 +892,21 @@ def scrape_data():
     Rate_SRO()
     
     print('Scrape OK')
-    ##############################################################    
-    # ตั้งเวลาให้รันโค้ด scrape_data() ทุกๆ 24 ชั่วโมง
-    schedule.every(30).seconds.do(scrape_data)
-
-    # วนลูปเพื่อตรวจสอบเวลาและรันโปรแกรมอย่างต่อเนื่อง
-    while True:
-        schedule.run_pending()
-        time.sleep(10)  # หยุดรอการตรวจสอบเวลาไว้เป็นระยะๆ
-        print("Waiting for next schedule...")
         
 @app.route('/testG', methods=['GET'])
 def get_data():
     
     scrape_data()
-    # ส่งข้อมูลที่ถูกสร้างขึ้นแบบยังไม่ได้เกี่ยวข้องกับข้อมูลจริง ๆ
     data = {
     'message': 'Scrape OK'
     }
     return jsonify(data)
 
-# if __name__ == '__main__':
-#     app.run(host='0.0.0.0', debug=True)
+if __name__ == '__main__':
+    schedule.every(60).seconds.do(scrape_data)
+
+    while True:
+        schedule.run_pending()
+        time.sleep(10)
+        print("Waiting for next schedule...")
+
