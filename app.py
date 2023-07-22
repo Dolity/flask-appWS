@@ -17,7 +17,7 @@ def hello_world():
 
 def Rate_SRO():
     
-    cred = credentials.Certificate('env\keyFS.json')
+    cred = credentials.Certificate('keyFS.json')
     try:
         firebase_admin.get_app()
     except ValueError:
@@ -30,7 +30,7 @@ def Rate_SRO():
 
     url = "https://www.superrich1965.com/currency.php"
     
-    service  = Service(executable_path='env\msedgedriver.exe') 
+    service  = Service(executable_path='msedgedriver.exe') 
     driver = webdriver.Edge(service=service)
     
     driver.get(url)
@@ -253,7 +253,7 @@ def Rate_SRG():
     print('done')
 
 def Rate_K79():
-    cred = credentials.Certificate('env\keyFS.json')
+    cred = credentials.Certificate('keyFS.json')
     try:
         firebase_admin.get_app()
     except ValueError:
@@ -264,7 +264,7 @@ def Rate_K79():
     print("Scraping data "+company_name)
     url = "https://www.k79exchange.com/"
     
-    service  = Service(executable_path='env\msedgedriver.exe') 
+    service  = Service(executable_path='msedgedriver.exe') 
     driver = webdriver.Edge(service=service)
     
     driver.get(url)
