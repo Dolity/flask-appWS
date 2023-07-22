@@ -9,7 +9,6 @@ from firebase_admin import credentials, firestore
 from flask import Flask, request, jsonify
 
 
-
 app = Flask(__name__)
 
 @app.route('/')
@@ -892,8 +891,15 @@ def scrape_data():
     Rate_SRO()
     
     print('Scrape OK')
+    
+    schedule.every(60).seconds.do(scrape_data)
+
+    while True:
+        schedule.run_pending()
+        time.sleep(10)
+        print("Waiting for next schedule...")
         
-@app.route('/testG', methods=['GET'])
+@app.route('/testG')
 def get_data():
     
     scrape_data()
@@ -903,10 +909,6 @@ def get_data():
     return jsonify(data)
 
 if __name__ == '__main__':
-    schedule.every(60).seconds.do(scrape_data)
+    print('Start Service...')
 
-    while True:
-        schedule.run_pending()
-        time.sleep(10)
-        print("Waiting for next schedule...")
 
